@@ -1,0 +1,49 @@
+# Name displayed in the Actions tab of the repository.
+name: Hello World with Python
+# The Event that triggers this workflow.
+on:
+  # Runs automatically when a commit is pushed to the main branch.
+  push:
+    # Limits the workflow to only run on the main branch.
+    branches:
+      - main # The branch that triggers the workflow.
+ # Adds a 'Run workflow button' to the Action tab of the repository to allow for manual triggering.
+  workflow_dispatch:
+
+# The set of jobs that will be run as part of the workflow.    
+jobs:
+  # Runs the Python Hello World program.  
+  hello-python:
+    # The name of the job that will be displayed in the Actions tab of the repository.
+    name: Run the Python Hello World program
+    # The type of virtual machine to run the job on.
+    runs-on: ubuntu-latest
+    # The steps that will be run as part of the job. --Top --> Bottom--
+    steps:
+        # Checks out the repository so that the workflow can access it.
+      - name: Check out the repository
+        # The action that checks out the repository.
+        uses: actions/checkout@v4
+      
+        # Installs Python on the virtual machine.
+      - name: Set up Python 3.11
+        # The action that sets up Python.
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+        # Installs the dependencies from the requirements.txt file.
+      - name: Install dependencies
+        # Runs a shell command to install the dependencies. (Or Virtual Environment)
+        run: |
+          # Upgrades pip to the latest version.
+          python -m pip install --upgrade pip
+          # Installs the dependencies from the requirements.txt file.
+          pip install -r requirements.txt
+        # Runs the Python program with the specified environment variable.
+      - name: Run the Python program
+        # Sets the environment variable.
+        env:
+          # Environment variable that specifies who to greet in the Python program.
+          WHO_TO_GREET: 'GitHub Actions Student!'
+        # Runs the Python program named Hello.
+        run: python hello.py
